@@ -1,0 +1,40 @@
+{% macro page(data, url, id_field) %}
+    {# 判断页码数据是否存在 #}
+    {% if data %}
+        <nav aria-label='Page navigation'>
+            <ul class="pagination">
+                <li><a href="{{ url_for(url, page=1, id_field=id_field) }}">首页</a></li>
+
+                {# 如果当前页面有上一页则能正常使用该功能 #}
+                {% if data.has_prev %}
+                    <li>
+                        <a href="{{ url_for(url, page=data.prev_num, id_field=id_field) }}">上一页</a>
+                    </li>
+                {% else %}
+                    <li class='disabled'><a href='#'>上一页</a></li>
+                {% endif %}
+
+                {% for v in data.iter_pages() %}
+                    {# 如果页面等于当前页面,则高亮该图标 #}
+                    {% if v == data.page %}
+                        <li class='active'><a href="#">{{ v }}</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for(url, page=v, id_field=id_field) }}">{{ v }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {# 如果当前页面有下一页则能正常使用该功能 #}
+                {% if data.has_next %}
+                    <li>
+                        <a href="{{ url_for(url, page=data.next_num, id_field=id_field) }}">下一页</a>
+                    </li>
+                {% else %}
+                    <li class='disabled'><a href='#'>下一页</a></li>
+                {% endif %}
+
+                <li><a href="{{ url_for(url, page=data.pages, id_field=id_field) }}">尾页</a></li>
+            </ul>
+        </nav>
+    {% endif %}
+{% endmacro %}

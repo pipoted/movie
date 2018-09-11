@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="xiao" pattern="file:app/__init__.py||file:app/config.py||file:app/models.py||file:app/utils.py||file:manage.py" />
+</component>

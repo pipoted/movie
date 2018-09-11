@@ -1,0 +1,38 @@
+{# 用于分页的宏,其中,data是分页页码,url是当前页url #}
+{% macro page(data, url) %}
+	{# 判断页码数据是否存在 #}
+	{% if data %}
+		<ul class="pagination pagination-sm no-margin pull-right">
+			<li><a href="{{ url_for(url, page=1) }}">首页</a></li>
+
+			{# 如果当前页面有上一页则能正常使用该功能 #}
+			{% if data.has_prev %}
+				<li>
+					<a href="{{ url_for(url, page=data.prev_num) }}">上一页</a>
+				</li>
+			{% else %}
+				<li class='disabled'><a href='#'>上一页</a></li>
+			{% endif %}
+
+			{% for v in data.iter_pages() %}
+				{# 如果页面等于当前页面,则高亮该图标 #}
+				{% if v == data.page %}
+					<li class='active'><a href="#">{{ v }}</a></li>
+				{% else %}
+					<li><a href="{{ url_for(url, page=v) }}">{{ v }}</a></li>
+				{% endif %}
+			{% endfor %}
+
+			{# 如果当前页面有下一页则能正常使用该功能 #}
+			{% if data.has_next %}
+				<li>
+					<a href="{{ url_for(url, page=data.next_num) }}">下一页</a>
+				</li>
+			{% else %}
+				<li class='disabled'><a href='#'>下一页</a></li>
+			{% endif %}
+
+			<li><a href="{{ url_for(url, page=data.pages) }}">尾页</a></li>
+		</ul>
+	{% endif %}
+{% endmacro %}
